@@ -1,4 +1,5 @@
-import { Clock } from 'lucide-react';
+import { useState } from 'react';
+import { Clock, Copy, Download, Check } from 'lucide-react';
 import type { PresentationOutline as OutlineType } from '../types';
 
 interface Props {
@@ -6,14 +7,60 @@ interface Props {
 }
 
 export default function PresentationOutline({ outline }: Props) {
+  const [copied, setCopied] = useState(false);
+
+  const buildText = () => {
+    let text = `Presentation Outline — ~${outline.estimated_duration_minutes} min\n\n`;
+    outline.sections.forEach((s, i) => {
+      text += `${i + 1}. ${s.title}  (${s.duration_minutes} min)\n`;
+      s.key_points.forEach((kp) => {
+        text += `   - ${kp}\n`;
+      });
+      text += '\n';
+    });
+    return text;
+  };
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(buildText());
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownload = () => {
+    const blob = new Blob([buildText()], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'presentation-outline.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="rounded-2xl bg-white/55 backdrop-blur-xl border border-white/50 shadow-sm p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-indigo-700">Presentation Outline</h3>
-        <span className="flex items-center gap-1.5 text-xs text-indigo-400">
-          <Clock className="w-3.5 h-3.5" />
-          ~{outline.estimated_duration_minutes} min
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="flex items-center gap-1.5 text-xs text-indigo-400 mr-2">
+            <Clock className="w-3.5 h-3.5" />
+            ~{outline.estimated_duration_minutes} min
+          </span>
+          <button
+            onClick={handleCopy}
+            title="Copy outline"
+            className="p-1.5 rounded-lg hover:bg-indigo-50 transition-colors text-indigo-400 hover:text-indigo-600"
+          >
+            {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+          </button>
+          <button
+            onClick={handleDownload}
+            title="Download outline"
+            className="p-1.5 rounded-lg hover:bg-indigo-50 transition-colors text-indigo-400 hover:text-indigo-600"
+          >
+            <Download className="w-4 h-4" />
+          </button>
+        </div>
       </div>
       <div className="space-y-0">
         {outline.sections.map((section, i) => (
@@ -35,6 +82,9 @@ export default function PresentationOutline({ outline }: Props) {
           </div>
         ))}
       </div>
+      {copied && (
+        <p className="text-xs text-emerald-500 text-center mt-2 animate-pulse">Copied to clipboard!</p>
+      )}
     </div>
   );
 }

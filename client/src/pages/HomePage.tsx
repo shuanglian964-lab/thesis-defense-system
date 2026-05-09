@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { BookOpen } from 'lucide-react';
 import FileUpload from '../components/FileUpload';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useSession } from '../context/SessionContext';
@@ -7,7 +8,7 @@ import { analyzePaper } from '../services/api';
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { setAnalysis, setStatus, setError, error } = useSession();
+  const { setAnalysis, setStatus, setError, error, history } = useSession();
   const { loading, execute } = useApi(analyzePaper);
 
   const handleFileSelected = async (file: File) => {
@@ -62,6 +63,18 @@ export default function HomePage() {
           </div>
         ))}
       </div>
+
+      {history.length > 0 && (
+        <div className="mt-8 text-center">
+          <button
+            onClick={() => navigate('/history')}
+            className="inline-flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-600 transition-colors"
+          >
+            <BookOpen className="w-4 h-4" />
+            View Practice History ({history.length} session{history.length !== 1 ? 's' : ''})
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { GraduationCap, ArrowLeft } from 'lucide-react';
+import { GraduationCap, ArrowLeft, BookOpen } from 'lucide-react';
 import { useSession } from '../context/SessionContext';
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -30,6 +30,13 @@ export default function Layout({ children }: { children: ReactNode }) {
           {sessionId && (
             <span className="text-xs text-indigo-400 bg-indigo-50 px-3 py-1 rounded-full">Session active</span>
           )}
+          <Link
+            to="/history"
+            className="flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-600 transition-colors px-3 py-1.5 rounded-lg hover:bg-white/50"
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">History</span>
+          </Link>
         </div>
       </nav>
 

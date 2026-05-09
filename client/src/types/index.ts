@@ -62,3 +62,17 @@ export interface AnalyzeResponse {
 }
 
 export type SessionStatus = 'idle' | 'uploading' | 'analyzing' | 'preparing' | 'in_progress' | 'completed';
+
+export interface HistoryRecord {
+  id: string;
+  session_id: string;
+  topic: string;
+  date: string;
+  question_count: number;
+  answered_count: number;
+  total_score: number;
+  average_score: number;
+  dimension_averages: DimensionScores;
+  summary: FinalSummary;
+  questions: QuestionItem[];
+}
