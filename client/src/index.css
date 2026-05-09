@@ -2,45 +2,110 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Warm Academic Palette */
+  --bg-cream: #faf8f5;
+  --bg-paper: #f5f0e8;
+  --bg-warm-white: #fdfcfa;
+  --ink-navy: #1e293b;
+  --ink-slate: #334155;
+  --ink-muted: #64748b;
+  --gold-primary: #b8860b;
+  --gold-light: #c9a84c;
+  --gold-pale: #f5ecd7;
+  --gold-glow: rgba(184, 134, 11, 0.15);
+  --accent-blue: #3b5998;
+  --accent-blue-light: #e8edf6;
+  --divider: #e8e1d5;
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(200, 185, 150, 0.3);
+  --card-shadow: 0 2px 16px rgba(30, 41, 59, 0.04);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 50%, #fff0f5 100%);
-  color: #3730a3;
-  min-height: 100vh;
-}
-
 html {
   scroll-behavior: smooth;
 }
 
-/* Glassmorphism utility */
-.glass {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 1rem;
+body {
+  font-family: 'Source Sans 3', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-cream);
+  color: var(--ink-slate);
+  min-height: 100vh;
 }
 
-/* Scrollbar styling */
+/* Heading defaults */
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--ink-navy);
+  line-height: 1.2;
+}
+
+/* Links */
+a {
+  color: var(--accent-blue);
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: var(--gold-primary);
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--bg-cream);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.2);
+  background: var(--divider);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.35);
+  background: var(--ink-muted);
+}
+
+/* Selection */
+::selection {
+  background: var(--gold-pale);
+  color: var(--ink-navy);
+}
+
+/* Utility: paper texture overlay */
+.paper-texture {
+  position: relative;
+}
+.paper-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Utility: card */
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  box-shadow: var(--card-shadow);
+}
+
+/* Utility: gold accent line */
+.accent-line {
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(to right, var(--gold-primary), var(--gold-light));
+  border-radius: 2px;
 }
