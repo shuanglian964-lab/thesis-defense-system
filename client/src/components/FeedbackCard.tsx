@@ -15,8 +15,9 @@ const dimLabels: Record<string, string> = {
 
 export default function FeedbackCard({ feedback }: Props) {
   return (
-    <div className="rounded-2xl bg-white/55 backdrop-blur-xl border border-white/50 shadow-sm overflow-hidden">
-      <div className="p-5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
+    <div className="surface-card overflow-hidden">
+      {/* Score header */}
+      <div className="p-5 bg-accent text-white">
         <div className="flex items-center justify-between">
           <span className="text-sm font-semibold">Your Score</span>
           <span className="text-4xl font-extrabold">{feedback.score.toFixed(1)}</span>
@@ -33,16 +34,18 @@ export default function FeedbackCard({ feedback }: Props) {
         </div>
       </div>
 
+      {/* Details */}
       <div className="p-5 space-y-4">
         {feedback.strengths.length > 0 && (
           <div>
-            <p className="text-xs font-semibold text-emerald-600 flex items-center gap-1 mb-2">
+            <p className="text-xs font-semibold text-success flex items-center gap-1 mb-2">
               <CheckCircle2 className="w-3.5 h-3.5" /> Strengths
             </p>
-            <ul className="space-y-1">
+            <ul className="space-y-1.5">
               {feedback.strengths.map((s, i) => (
-                <li key={i} className="text-sm text-indigo-700 pl-5 relative before:content-['·'] before:absolute before:left-2 before:text-emerald-400">
-                  {s}
+                <li key={i} className="text-sm text-neutral-700 leading-relaxed flex items-start gap-2">
+                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-success/50 shrink-0" />
+                  <span>{s}</span>
                 </li>
               ))}
             </ul>
@@ -51,13 +54,14 @@ export default function FeedbackCard({ feedback }: Props) {
 
         {feedback.improvements.length > 0 && (
           <div>
-            <p className="text-xs font-semibold text-amber-600 flex items-center gap-1 mb-2">
+            <p className="text-xs font-semibold text-warning flex items-center gap-1 mb-2">
               <Lightbulb className="w-3.5 h-3.5" /> Areas to Improve
             </p>
-            <ul className="space-y-1">
+            <ul className="space-y-1.5">
               {feedback.improvements.map((imp, i) => (
-                <li key={i} className="text-sm text-indigo-700 pl-5 relative before:content-['·'] before:absolute before:left-2 before:text-amber-400">
-                  {imp}
+                <li key={i} className="text-sm text-neutral-700 leading-relaxed flex items-start gap-2">
+                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-warning/50 shrink-0" />
+                  <span>{imp}</span>
                 </li>
               ))}
             </ul>
@@ -65,9 +69,9 @@ export default function FeedbackCard({ feedback }: Props) {
         )}
 
         {feedback.reference_answer && (
-          <div className="p-4 rounded-xl bg-indigo-50/60 border border-indigo-100/50">
-            <p className="text-xs font-semibold text-indigo-500 mb-1">Model Answer</p>
-            <p className="text-sm text-indigo-800 leading-relaxed">{feedback.reference_answer}</p>
+          <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-100">
+            <p className="text-xs font-semibold text-neutral-500 mb-1">Model Answer</p>
+            <p className="text-sm text-neutral-700 leading-relaxed">{feedback.reference_answer}</p>
           </div>
         )}
       </div>

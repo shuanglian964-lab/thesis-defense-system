@@ -36,6 +36,12 @@ export default function FileUpload({ onFileSelected, isLoading, error }: Props) 
     if (f) handleFile(f);
   }, [handleFile]);
 
+  const dropBg = isDragging ? 'bg-accent-50/80' : 'bg-surface-raised/80';
+  const dropBorder = isDragging ? 'border-accent' : 'border-neutral-200';
+  const dropShadow = isDragging ? 'shadow-lg shadow-accent/10' : 'shadow-sm';
+  const dropScale = isDragging ? 'scale-[1.02]' : '';
+  const loadingState = isLoading ? 'pointer-events-none opacity-50' : '';
+
   return (
     <div className="w-full max-w-lg">
       <div
@@ -43,18 +49,9 @@ export default function FileUpload({ onFileSelected, isLoading, error }: Props) 
         onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
         onClick={() => !isLoading && inputRef.current?.click()}
-        className={[
-          'relative p-10 rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-300',
-          isDragging
-            ? 'scale-[1.02] shadow-md'
-            : 'hover:shadow-sm hover:-translate-y-0.5',
-          isLoading ? 'pointer-events-none opacity-50' : '',
-        ].join(' ')}
-        style={{
-          background: isDragging ? 'rgba(245,236,215,0.5)' : 'rgba(255,255,255,0.4)',
-          borderColor: isDragging ? '#b8860b' : '#d0c5a5',
-          boxShadow: isDragging ? '0 4px 24px rgba(184,134,11,0.1)' : undefined,
-        }}
+        className={`relative p-10 rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-300
+          ${dropBg} ${dropBorder} ${dropShadow} ${dropScale} ${loadingState}
+          hover:shadow-md hover:-translate-y-0.5`}
       >
         <input
           ref={inputRef}
@@ -66,32 +63,29 @@ export default function FileUpload({ onFileSelected, isLoading, error }: Props) 
 
         <div className="flex items-center gap-5">
           {file ? (
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-              style={{ background: '#f5ecd7' }}
-            >
-              <FileText className="w-6 h-6" style={{ color: '#b8860b' }} />
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-accent-50">
+              <FileText className="w-6 h-6 text-accent" />
             </div>
           ) : (
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors"
-              style={{ background: isDragging ? '#f5ecd7' : '#fdfcfa', border: '1px solid #e8e1d5' }}
-            >
-              <Upload className="w-6 h-6" style={{ color: isDragging ? '#b8860b' : '#94a3b8' }} />
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors border
+              ${isDragging ? 'bg-accent-50 border-accent/20' : 'bg-surface-raised border-neutral-200'}`}>
+              <Upload className={`w-6 h-6 ${isDragging ? 'text-accent' : 'text-neutral-400'}`} />
             </div>
           )}
           <div className="flex-1 min-w-0">
             {file ? (
               <>
-                <p className="text-sm font-semibold truncate" style={{ color: '#1e293b' }}>{file.name}</p>
-                <p className="text-xs mt-0.5" style={{ color: '#94a3b8' }}>{(file.size / 1024 / 1024).toFixed(1)} MB · Click to change</p>
+                <p className="text-sm font-semibold text-neutral-900 truncate">{file.name}</p>
+                <p className="text-xs mt-0.5 text-neutral-400">
+                  {(file.size / 1024 / 1024).toFixed(1)} MB · Click to change
+                </p>
               </>
             ) : (
               <>
-                <p className="text-sm font-semibold" style={{ color: '#1e293b' }}>
+                <p className="text-sm font-semibold text-neutral-800">
                   Drop your English thesis PDF
                 </p>
-                <p className="text-xs mt-0.5" style={{ color: '#94a3b8' }}>
+                <p className="text-xs mt-0.5 text-neutral-400">
                   or click to browse · PDF only · Max 10MB
                 </p>
               </>
@@ -101,12 +95,9 @@ export default function FileUpload({ onFileSelected, isLoading, error }: Props) 
       </div>
 
       {error && (
-        <div
-          className="mt-4 p-4 rounded-xl flex items-center gap-3"
-          style={{ background: 'rgba(254,242,242,0.6)', border: '1px solid rgba(239,68,68,0.15)' }}
-        >
-          <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-          <p className="text-sm" style={{ color: '#dc2626' }}>{error}</p>
+        <div className="mt-4 p-4 rounded-xl flex items-center gap-3 bg-error-50/80 border border-error/20">
+          <AlertCircle className="w-5 h-5 text-error flex-shrink-0" />
+          <p className="text-sm text-error-700">{error}</p>
         </div>
       )}
     </div>

@@ -1,3 +1,5 @@
+import { motion } from 'motion/react';
+
 interface Props {
   current: number;
   total: number;
@@ -9,15 +11,17 @@ export default function ProgressBar({ current, total }: Props) {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-semibold text-indigo-500 uppercase tracking-wider">
+        <span className="caption">
           Question {current} of {total}
         </span>
-        <span className="text-xs text-indigo-400">{Math.round(pct)}%</span>
+        <span className="text-xs text-neutral-400">{Math.round(pct)}%</span>
       </div>
-      <div className="h-2 rounded-full bg-indigo-100/50 overflow-hidden">
-        <div
-          className="h-full rounded-full bg-gradient-to-r from-indigo-400 to-purple-400 transition-all duration-500 ease-out"
-          style={{ width: `${pct}%` }}
+      <div className="h-2 rounded-full bg-neutral-100 overflow-hidden">
+        <motion.div
+          className="h-full rounded-full bg-accent"
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
         />
       </div>
     </div>

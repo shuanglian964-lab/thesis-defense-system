@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { Upload, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
+import { motion } from 'motion/react';
 import FileUpload from '../components/FileUpload';
 import LoadingSpinner from '../components/LoadingSpinner';
 import HeroIllustration from '../components/HeroIllustration';
@@ -12,6 +13,19 @@ const steps = [
   { num: '02', title: 'Review & Prepare', desc: 'Get 7 defense questions, reference answers, and a 10-minute presentation outline.' },
   { num: '03', title: 'Voice Practice', desc: 'Answer questions aloud. AI listens, scores, and gives instant feedback on 5 dimensions.' },
 ];
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.3 },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0 },
+};
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -29,26 +43,24 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: '#faf8f5' }}>
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 py-14 sm:py-20">
+    <div className="min-h-screen bg-surface">
+      <div className="max-w-5xl mx-auto px-6 sm:px-8 py-20 sm:py-28">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* ─────── LEFT COLUMN ─────── */}
           <div className="flex flex-col justify-center pt-4 lg:pt-0">
             {/* Label chip */}
-            <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ color: '#b8860b', fontFamily: "'JetBrains Mono', monospace" }}>
-              AI-Powered Defense Practice
-            </p>
+            <p className="caption mb-4">AI-Powered Defense Practice</p>
 
             {/* Hero heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold leading-[1.1] mb-6" style={{ fontFamily: "'Playfair Display', Georgia, serif", color: '#1e293b' }}>
+            <h1 className="heading-1 mb-6">
               Practice your thesis defense{' '}
-              <span style={{ color: '#b8860b' }}>with an AI</span>
+              <span className="text-accent italic">with an AI</span>
               <br />
-              <span style={{ fontStyle: 'italic' }}>that knows your paper</span>
+              <span className="font-italic">that knows your paper</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg leading-relaxed mb-8 max-w-lg" style={{ color: '#64748b' }}>
+            <p className="body-large mb-8 max-w-lg">
               Upload your English thesis PDF. Our AI reads it, generates defense questions, and coaches you through a realistic voice simulation — complete with scores and feedback.
             </p>
 
@@ -64,41 +76,40 @@ export default function HomePage() {
               <FileUpload onFileSelected={handleFileSelected} isLoading={false} error={error} />
             )}
 
-            {/* ── 3-Step Process Cards (like Fig Mint spec table) ── */}
-            <div className="mt-12 space-y-4">
+            {/* 3-Step Process Cards */}
+            <motion.div
+              className="mt-12 space-y-4"
+              variants={container}
+              initial="hidden"
+              animate="show"
+            >
               {steps.map((step, i) => (
-                <div
+                <motion.div
                   key={step.num}
-                  className="flex items-start gap-4 p-4 rounded-xl transition-all duration-300 hover:translate-x-1"
-                  style={{
-                    background: i === 0 ? 'rgba(255,255,255,0.6)' : 'transparent',
-                    borderBottom: i < steps.length - 1 ? '1px solid #e8e1d5' : 'none',
-                  }}
+                  variants={item}
+                  className={`flex items-start gap-4 p-4 rounded-xl transition-all duration-300 hover:translate-x-1
+                    ${i === 0 ? 'bg-surface-raised shadow-sm' : ''}`}
                 >
-                  <span
-                    className="text-xl font-bold shrink-0 w-10 text-right"
-                    style={{ fontFamily: "'Playfair Display', serif", color: '#b8860b' }}
-                  >
+                  <span className="text-xl font-bold shrink-0 w-10 text-right font-heading text-accent">
                     {step.num}
                   </span>
                   <div>
-                    <h4 className="text-base font-semibold mb-0.5" style={{ color: '#1e293b' }}>
+                    <h4 className="text-base font-semibold mb-0.5 text-neutral-800">
                       {step.title}
                     </h4>
-                    <p className="text-sm leading-relaxed" style={{ color: '#64748b' }}>
+                    <p className="body-base text-neutral-500">
                       {step.desc}
                     </p>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             {/* History link */}
             {history.length > 0 && (
               <button
                 onClick={() => navigate('/history')}
-                className="inline-flex items-center gap-2 mt-8 text-sm transition-colors hover:underline"
-                style={{ color: '#b8860b' }}
+                className="btn-ghost mt-8 text-sm"
               >
                 <BookOpen className="w-4 h-4" />
                 View practice history ({history.length} session{history.length !== 1 ? 's' : ''})
@@ -106,19 +117,12 @@ export default function HomePage() {
             )}
 
             {/* Decorative accent line */}
-            <div className="mt-8" style={{ width: '40px', height: '3px', background: 'linear-gradient(to right, #b8860b, #c9a84c)', borderRadius: '2px' }} />
+            <div className="accent-line mt-8" />
           </div>
 
           {/* ─────── RIGHT COLUMN ─────── */}
           <div className="flex items-center justify-center lg:order-2">
-            <div
-              className="relative w-full max-w-[420px] rounded-2xl p-6 sm:p-8"
-              style={{
-                background: 'linear-gradient(135deg, rgba(245,236,215,0.4) 0%, rgba(255,255,255,0.3) 50%, rgba(232,225,213,0.2) 100%)',
-                border: '1px solid rgba(200,185,150,0.25)',
-                boxShadow: '0 4px 32px rgba(30,41,59,0.04)',
-              }}
-            >
+            <div className="relative w-full max-w-[420px] rounded-2xl p-6 sm:p-8 bg-gradient-to-br from-accent-50/50 via-surface-raised/30 to-neutral-100/20 border border-neutral-200/50 shadow-md">
               <HeroIllustration />
             </div>
           </div>

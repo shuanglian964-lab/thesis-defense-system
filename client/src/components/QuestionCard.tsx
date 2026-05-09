@@ -9,9 +9,9 @@ interface Props {
 }
 
 const typeConfig: Record<string, { label: string; bg: string; text: string }> = {
-  basic: { label: 'Basic', bg: 'bg-emerald-100', text: 'text-emerald-700' },
-  deep: { label: 'Deep Analysis', bg: 'bg-indigo-100', text: 'text-indigo-700' },
-  tricky: { label: 'Tricky', bg: 'bg-amber-100', text: 'text-amber-700' },
+  basic: { label: 'Basic', bg: 'bg-tag-emerald-soft', text: 'text-tag-emerald' },
+  deep: { label: 'Deep Analysis', bg: 'bg-tag-purple-soft', text: 'text-tag-purple' },
+  tricky: { label: 'Tricky', bg: 'bg-tag-amber-soft', text: 'text-tag-amber' },
 };
 
 export default function QuestionCard({ question, index, isExpanded, onToggle }: Props) {
@@ -19,11 +19,11 @@ export default function QuestionCard({ question, index, isExpanded, onToggle }: 
 
   return (
     <div
-      className="rounded-2xl bg-white/55 backdrop-blur-xl border border-white/50 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden"
+      className="surface-card hover:shadow-md transition-all cursor-pointer overflow-hidden"
       onClick={onToggle}
     >
       <div className="p-5 flex items-start gap-4">
-        <span className="flex-shrink-0 w-8 h-8 rounded-xl bg-indigo-100 flex items-center justify-center text-sm font-bold text-indigo-500">
+        <span className="flex-shrink-0 w-8 h-8 rounded-xl bg-neutral-100 flex items-center justify-center text-sm font-bold text-neutral-500">
           {index}
         </span>
         <div className="flex-1 min-w-0">
@@ -32,17 +32,17 @@ export default function QuestionCard({ question, index, isExpanded, onToggle }: 
               {cfg.label}
             </span>
           </div>
-          <p className="text-sm font-medium text-indigo-900 leading-relaxed">{question.question}</p>
+          <p className="text-sm font-medium text-neutral-800 leading-relaxed">{question.question}</p>
         </div>
         <ChevronDown
-          className={`w-5 h-5 text-indigo-400 flex-shrink-0 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-neutral-400 flex-shrink-0 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
         />
       </div>
       {isExpanded && (
         <div className="px-5 pb-5 pl-[68px]">
-          <div className="p-4 rounded-xl bg-indigo-50/60 border border-indigo-100/50">
-            <p className="text-xs font-semibold text-indigo-500 mb-1">Reference Answer</p>
-            <p className="text-sm text-indigo-800 leading-relaxed">{question.reference_answer}</p>
+          <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-100">
+            <p className="text-xs font-semibold text-neutral-500 mb-1">Reference Answer</p>
+            <p className="text-sm text-neutral-700 leading-relaxed">{question.reference_answer}</p>
           </div>
         </div>
       )}
